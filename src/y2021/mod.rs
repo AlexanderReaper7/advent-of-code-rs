@@ -2,6 +2,7 @@
 pub mod d1;
 pub mod d2;
 pub mod d3;
+pub mod d4;
 
 pub fn select_function(day: u32, part: u32) -> fn(String) -> String {
     match day {
@@ -18,6 +19,11 @@ pub fn select_function(day: u32, part: u32) -> fn(String) -> String {
         3 => match part {
             1 => d3::part1,
             2 => d3::part2,
+            _ => panic!("Part not found"),
+        },
+        4 => match part {
+            1 => d4::part1,
+            2 => d4::part2,
             _ => panic!("Part not found"),
         },
         _ => panic!("Day not found"),

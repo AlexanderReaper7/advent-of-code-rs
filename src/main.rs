@@ -15,7 +15,10 @@ fn main() {
     let func = select_function(year, day, part);
     let result = func(input);
     println!("Result: {}", result);
-    prompt_for_input("press enter to exit...");
+    stdin = prompt_for_input("--- press enter to exit or type anything to submit answer ---");
+    if stdin.trim().len() > 0 {
+        submit_result(result, year, day, part);
+    }
 }
 
 fn get_input_from_website(year: u32, day: u32) -> String {
@@ -46,3 +49,15 @@ fn prompt_for_input(prompt: &str) -> String {
     std::io::stdin().read_line(&mut stdin).unwrap();
     stdin
 }
+
+fn submit_result(result: String, year: u32, day: u32, part: u32) {
+    let _ = Command::new("aoc")
+    .arg("submit")
+    .arg(format!("{}", &part))
+    .arg(format!("{}", &result))
+    .arg("-s").arg(".session")
+    .arg("-y").arg(format!("{}", &year))
+    .arg("-d").arg(format!("{}", day))
+    .spawn().unwrap().wait();
+}
+
