@@ -1,7 +1,7 @@
 //! Advent of code challenge https://adventofcode.com/
 use std::process::Command;
 use std::io::prelude::*;
-mod y2021;
+mod auto_import;
 
 fn main() {
     // get input for year day and part
@@ -11,10 +11,13 @@ fn main() {
     let day = stdin.trim().parse::<u32>().unwrap_or(1);
     stdin = prompt_for_input("Enter part(default 1):");
     let part = stdin.trim().parse::<u32>().unwrap_or(1);
+
     let input: String = get_input_from_website(year, day);
-    let func = select_function(year, day, part);
+    let func = auto_import::select_function(year, day, part);
     let result = func(input);
+
     println!("Result: {}", result);
+    
     stdin = prompt_for_input("--- press enter to exit or type anything to submit answer ---");
     if stdin.trim().len() > 0 {
         submit_result(result, year, day, part);
@@ -34,13 +37,6 @@ fn get_input_from_website(year: u32, day: u32) -> String {
     file.read_to_string(&mut output).unwrap();
     std::fs::remove_file("input").unwrap();
     output
-}
-
-fn select_function(year: u32, day: u32, part: u32) -> fn(String) -> String {
-    match year {
-        2021 => y2021::select_function(day, part),
-        _ => panic!("Year not found"),
-    }
 }
 
 fn prompt_for_input(prompt: &str) -> String {
