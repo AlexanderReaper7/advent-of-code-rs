@@ -6,7 +6,6 @@ enum Direction {
     Forward,
 }
 impl std::str::FromStr for Direction {
-
     type Err = &'static str;
 
     fn from_str(input: &str) -> Result<Direction, Self::Err> {
@@ -24,14 +23,22 @@ struct Command {
     steps: i32,
 }
 
-pub fn part1(input: String) -> String {
-    // parse input
+fn parse_input(input: String) -> Vec<Command> {
     let mut commands: Vec<Command> = Vec::new();
     for line in input.lines() {
         let parts: Vec<&str> = line.split_whitespace().collect();
         assert_eq!(parts.len(), 2);
-        commands.push(Command { direction: parts[0].parse::<Direction>().unwrap(), steps: parts[1].parse::<i32>().unwrap() });
+        commands.push(Command {
+            direction: parts[0].parse::<Direction>().unwrap(),
+            steps: parts[1].parse::<i32>().unwrap(),
+        });
     }
+    commands
+}
+
+pub fn part1(input: String) -> String {
+    // parse input
+    let commands: Vec<Command> = parse_input(input);
     // execute commands
     let mut depth = 0;
     let mut horizontal = 0;
@@ -49,18 +56,13 @@ pub fn part1(input: String) -> String {
         }
     }
     // return result
-    let result = (depth*horizontal).to_string();
+    let result = (depth * horizontal).to_string();
     result
 }
 
 pub fn part2(input: String) -> String {
     // parse input
-    let mut commands: Vec<Command> = Vec::new();
-    for line in input.lines() {
-        let parts: Vec<&str> = line.split_whitespace().collect();
-        assert_eq!(parts.len(), 2);
-        commands.push(Command { direction: parts[0].parse::<Direction>().unwrap(), steps: parts[1].parse::<i32>().unwrap() });
-    }
+    let commands: Vec<Command> = parse_input(input);
     // execute commands
     let mut depth = 0;
     let mut horizontal = 0;
@@ -75,11 +77,11 @@ pub fn part2(input: String) -> String {
             }
             Direction::Forward => {
                 horizontal += command.steps;
-                depth += aim*command.steps;
+                depth += aim * command.steps;
             }
         }
     }
     // return result
-    let result = (depth*horizontal).to_string();
+    let result = (depth * horizontal).to_string();
     result
 }

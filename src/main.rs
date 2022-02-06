@@ -13,9 +13,10 @@ fn main() {
     let part = stdin.trim().parse::<u32>().unwrap_or(1);
 
     let input: String = get_input_from_website(year, day);
+    println!("getting function for year {} day {} part {}...", year, day, part);
     let func = auto_import::select_function(year, day, part);
+    println!("running function...");
     let result = func(input);
-
     println!("Result: {}", result);
     
     stdin = prompt_for_input("--- press enter to exit or type anything to submit answer ---");
@@ -49,8 +50,8 @@ fn prompt_for_input(prompt: &str) -> String {
 fn submit_result(result: String, year: u32, day: u32, part: u32) {
     let _ = Command::new("aoc")
     .arg("submit")
-    .arg(format!("{}", &part))
-    .arg(format!("{}", &result))
+    .arg(&part.to_string())
+    .arg(&result)
     .arg("-s").arg(".session")
     .arg("-y").arg(format!("{}", &year))
     .arg("-d").arg(format!("{}", day))
