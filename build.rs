@@ -1,10 +1,12 @@
-use std::{io::prelude::*, path::{Path, PathBuf}, fs::File};
+use std::{io::prelude::*, path::{Path, PathBuf}, fs::File, process::Command};
+use quote::{quote, __private::TokenStream};
 
 fn main () {
-    generate_auto_import();
+    quoted_generate_auto_import();
 }
 
-fn generate_auto_import() {
+#[deprecated(since = "0.1.0", note = "Use `quoted_generate_auto_import` instead")]
+fn naive_generate_auto_import() {
     // get year folders
     let years: Vec<PathBuf> = Path::new("src/")
     .read_dir().unwrap()
@@ -65,4 +67,82 @@ fn generate_auto_import() {
 
     println!("cargo:rerun-if-changed=src/auto_import.rs");
     println!("cargo:rerun-if-changed=build.rs");
+}
+
+fn quoted_generate_auto_import() {
+
+    let years: Vec<String> = Path::new("src/")
+    .read_dir().unwrap()
+    .map(|e| e.unwrap())
+    .filter(|e| e.path().is_dir() && e.file_name().to_str().unwrap().starts_with("y20"))
+    .map(|e| e.file_name().to_str().unwrap().to_owned())
+    .collect();
+
+    for year in &years {
+        let days: Vec<String> = Path::new("src/").join(year.clone()).read_dir().unwrap()
+        .map(|e| e.unwrap())
+        .filter(|e| e.path().is_file() && e.file_name().to_str().unwrap().starts_with("d") && e.file_name().to_str().unwrap().ends_with(".rs"))
+        .map(|e| e.file_name().to_str().unwrap().to_owned())
+        .collect();
+
+        // TODO: move parts to separate function in days instead of year module
+
+        let days_expr: Vec<syn::Expr> = days.iter().map(|e| {let d = e.replace(".rs", ""); syn::parse_str::<syn::Expr>(&d).unwrap()}).collect();
+        let days_num_expr: Vec<syn::Expr> = days.iter().map(|e| e.replace("d", "").replace(".rs", "")).map(|e| syn::parse_str::<syn::Expr>(&e).unwrap()).collect();
+        let mod_code = quote! {
+            //! Auto-generated file by build script, do not edit!
+            #(pub mod #days_expr;)*
+            pub fn select_function(day: u32, part: u32) -> fn(String) -> String {
+                match day {
+                    #(#days_num_expr => 
+                        match part {
+                            1 => #days_expr::part1,
+                            2 => #days_expr::part2,
+                            _ => panic!("Invalid part!"),
+                        }
+                    ),*
+                    _ => panic!("Invalid day!"),
+                }
+            }
+        };
+
+        let mut mod_file = Path::new("src/").join(year).join("mod.rs");
+        write_and_format(mod_code, &mut mod_file);
+    }
+
+    let years_expr: Vec<syn::Expr> = years.iter().map(|e| syn::parse_str::<syn::Expr>(&e).unwrap()).collect();
+    let auto_import_file = Path::new("src/auto_import.rs").to_owned();
+    let years_mod: Vec<String> = years.iter().map(|e| format!("{}/mod.rs", e)).collect();
+    let years_num_expr: Vec<syn::Expr> = years.iter().map(|e| e.replace("y", "")).map(|e| syn::parse_str::<syn::Expr>(&e).unwrap()).collect();
+
+    let auto_import_code = quote! {
+        //! Auto-generated file by build script, do not edit!
+        #(
+            #[path = #years_mod]
+            pub mod #years_expr;
+        )*
+
+        pub fn select_function(year: u32, day: u32, part: u32) -> fn(String) -> String {
+            match year {
+                #(#years_num_expr => #years_expr::select_function(day, part),)*
+                _ => panic!("Invalid year!"),
+            }
+        }
+    };
+
+    write_and_format(auto_import_code, &auto_import_file)
+}
+
+fn write_and_format(tokens: TokenStream, path: &PathBuf) {
+    let mut file: File = File::create(&path).unwrap();
+    file.write_all(tokens.to_string().as_bytes()).unwrap();
+    
+    // run rustfmt TODO: make sure rustfmt is installed
+    // let exit_status = Command::new("rustfmt")
+    //     .arg(&path)
+    //     .spawn().expect("rustfmt failed to run")
+    //     .wait().unwrap();
+    // if !exit_status.success() {
+    //     println!("cargo:warning=failed to format {:?}", file);
+    // }
 }

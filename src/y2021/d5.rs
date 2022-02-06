@@ -1,4 +1,4 @@
-//! 
+//!
 
 pub fn part1(input: String) -> String {
     "".to_string()
