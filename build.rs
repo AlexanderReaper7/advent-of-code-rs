@@ -1,5 +1,5 @@
 use std::{io::prelude::*, path::{Path, PathBuf}, fs::File, process::Command};
-use quote::{quote, __private::TokenStream};
+use quote::quote;
 
 fn main () {
     quoted_generate_auto_import();
@@ -107,7 +107,7 @@ fn quoted_generate_auto_import() {
         };
 
         let mut mod_file = Path::new("src/").join(year).join("mod.rs");
-        write_and_format(mod_code, &mut mod_file);
+        write_and_format(mod_code.to_string(), &mut mod_file);
     }
 
     let years_expr: Vec<syn::Expr> = years.iter().map(|e| syn::parse_str::<syn::Expr>(&e).unwrap()).collect();
@@ -130,12 +130,12 @@ fn quoted_generate_auto_import() {
         }
     };
 
-    write_and_format(auto_import_code, &auto_import_file)
+    write_and_format(auto_import_code.to_string(), &auto_import_file)
 }
 
-fn write_and_format(tokens: TokenStream, path: &PathBuf) {
+fn write_and_format(text: String, path: &PathBuf) {
     let mut file: File = File::create(&path).unwrap();
-    file.write_all(tokens.to_string().as_bytes()).unwrap();
+    file.write_all(text.as_bytes()).unwrap();
     
     // run rustfmt TODO: make sure rustfmt is installed
     // let exit_status = Command::new("rustfmt")
