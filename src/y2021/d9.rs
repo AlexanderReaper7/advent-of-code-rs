@@ -1,6 +1,6 @@
 //! --- Day 9: Smoke Basin ---
 
-use std::{vec, str::FromStr};
+use std::vec;
 
 pub fn part1(input: String) -> String {
     // convert string into 2d array of digits
@@ -36,6 +36,6 @@ fn test_part1() {
     assert_eq!(part1(String::from(input)), String::from("15"));
 }
 
-pub fn part2(input: String) -> String {
+pub fn part2(_input: String) -> String {
     unimplemented!()
 }

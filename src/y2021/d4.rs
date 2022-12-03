@@ -51,7 +51,7 @@ fn parse_input(input: String) -> (Vec<u32>, Vec<Board>) {
         .collect::<Vec<u32>>();
     // parse boards
     let boards_input: Vec<&str> = input.lines().skip(1).collect();
-    let mut boards = boards_input
+    let boards = boards_input
         // split into individual boards by empty lines and remove any remaining empty lines
         .split(|s| s.is_empty())
         .filter(|s| !s.is_empty())

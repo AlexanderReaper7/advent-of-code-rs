@@ -1,10 +1,10 @@
-use std::{io::prelude::*, path::{Path, PathBuf}, fs::File, process::Command};
+use std::{io::prelude::*, path::{Path, PathBuf}, fs::File};
 use quote::quote;
 
 fn main () {
     quoted_generate_auto_import();
 }
-
+#[allow(dead_code)]
 #[deprecated(since = "0.1.0", note = "Use `quoted_generate_auto_import` instead")]
 fn naive_generate_auto_import() {
     // get year folders
