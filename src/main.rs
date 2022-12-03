@@ -1,3 +1,4 @@
+#![feature(iter_array_chunks)]
 //! Advent of code challenge https://adventofcode.com/
 use std::io::prelude::*;
 use std::process::Command;
