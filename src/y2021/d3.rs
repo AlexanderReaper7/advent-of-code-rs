@@ -90,20 +90,3 @@ pub fn part2(input: String) -> String {
     let co2_rating = u32::from_str_radix(valid_lines[0], 2).unwrap();
     (oxygen_rating * co2_rating).to_string()
 }
-
-#[test]
-fn test_part2() {
-    let input = "00100
-11110
-10110
-10111
-10101
-01111
-00111
-11100
-10000
-11001
-00010
-01010";
-    assert_eq!(part2(input.to_string()), "230");
-}
