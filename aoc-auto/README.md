@@ -1,6 +1,6 @@
 # aoc-auto
 
-## *Simplifies and speeds up the process of starting a new advent of code challenge.*
+### *Simplifies and speeds up the process of starting a new advent of code challenge.*
 
 This is a build script that generates files that automatically generates rust files that imports you solutions for each of the year/day/part according to a predetermined project structure.
 
