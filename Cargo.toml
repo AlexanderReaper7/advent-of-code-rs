@@ -1,17 +1,19 @@
+[workspace]
+members = ["aoc-auto", "aoc-lib"]
 [package]
 name = "advent-of-code-rs"
 version = "0.2.0"
 edition = "2021"
 authors = ["Alexander Öberg"]
+description = "Solutions to Advent of Code in Rust"
+repository = "https://github.com/AlexanderReaper7/advent-of-code-rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 rayon = "1.5.3"
-tui = "0.19.0"
-crossterm = "0.27.0"
 console = "0.15.7"
+time = "0.3.30"
+aoc-lib = { path = "aoc-lib" }
 
 [build-dependencies]
-quote = "1.0.33"
-syn = { version = "2", features = ["full", "parsing"] }
-prettyplease = "0.2.15"
+aoc-auto = { path = "aoc-auto" }

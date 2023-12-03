@@ -5,6 +5,7 @@ pub mod y2021;
 pub mod y2022;
 #[path = "y2023/mod.rs"]
 pub mod y2023;
+/// Selects the function for the given year, day, and part
 pub fn select_function(year: u32, day: u32, part: u32) -> fn(String) -> String {
     match year {
         2021 => y2021::select_function(day, part),

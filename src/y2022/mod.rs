@@ -8,6 +8,7 @@ pub mod d6;
 pub mod d7;
 pub mod d8;
 pub mod d9;
+/// Selects the function for the given day and part
 pub fn select_function(day: u32, part: u32) -> fn(String) -> String {
     match day {
         1 => {
