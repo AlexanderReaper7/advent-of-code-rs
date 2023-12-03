@@ -1,4 +1,4 @@
-//! This crate is used to generate the auto_import.rs and mod.rs files for each year and day.
+//! This crate is used to generate the auto_import.rs and mod.rs files for each year/day/part.
 
 use quote::quote;
 use std::{
@@ -23,10 +23,15 @@ pub fn aoc_auto() {
         .read_dir()
         .unwrap()
         .map(|e| e.unwrap())
-        .filter(|e| e.path().is_dir() && e.file_name().to_str().unwrap().starts_with("y20"))
+        .filter(|e| {
+            e.path().is_dir() &&
+            e.file_name().to_str().unwrap().starts_with("y") &&
+            // every character after y is a digit
+            e.file_name().to_str().unwrap().chars().skip(1).all(|c| c.is_digit(10))
+        })
         .map(|e| e.file_name().to_str().unwrap().to_owned())
         .collect();
-    // for each year, get days to make mod files for from src/y20XX/, each folder is a day formatted as dX.rs
+    // for each year, get days to include into the mod files for, each day is formatted as dX.rs
     for year in &years {
         let days: Vec<String> = Path::new("src/")
             .join(year.clone())
@@ -35,12 +40,12 @@ pub fn aoc_auto() {
             .map(|e| e.unwrap())
             .filter(|e| {
                 let filename = e.file_name().into_string().unwrap();
-                e.path().is_file() && filename.starts_with("d") && filename.ends_with(".rs")
+                e.path().is_file() && filename.starts_with("d") && filename.ends_with(".rs") && 
+                // every character after d is a digit except for the file extension
+                filename.replace(".rs", "").chars().skip(1).all(|c| c.is_digit(10))
             })
             .map(|e| e.file_name().to_str().unwrap().to_owned())
             .collect();
-
-        // TODO: move parts to separate function in days instead of year module
 
         let days_expr: Vec<syn::Expr> = days
             .iter()
@@ -59,16 +64,16 @@ pub fn aoc_auto() {
             #(pub mod #days_expr;)*
 
             /// Selects the function for the given day and part
-            pub fn select_function(day: u32, part: u32) -> fn(String) -> String {
+            pub fn select_function(day: u32, part: u32) -> Result<fn(String) -> String, String> {
                 match day {
                     #(#days_num_expr =>
                         match part {
-                            1 => #days_expr::part1,
-                            2 => #days_expr::part2,
-                            _ => panic!("Invalid part!"),
+                            1 => Ok(#days_expr::part1),
+                            2 => Ok(#days_expr::part2),
+                            _ => Err("Invalid part!".into()),
                         }
                     ),*
-                    _ => panic!("Invalid day!"),
+                    _ => Err("Invalid day!".into()),
                 }
             }
         };
@@ -96,10 +101,10 @@ pub fn aoc_auto() {
             pub mod #years_expr;
         )*
         /// Selects the function for the given year, day, and part
-        pub fn select_function(year: u32, day: u32, part: u32) -> fn(String) -> String {
+        pub fn select_function(year: u32, day: u32, part: u32) -> Result<fn(String) -> String, String> {
             match year {
-                #(#years_num_expr => #years_expr::select_function(day, part),)*
-                _ => panic!("Invalid year!"),
+                #(#years_num_expr => Ok(#years_expr::select_function(day, part)?),)*
+                _ => Err("Invalid year!".into()),
             }
         }
     };

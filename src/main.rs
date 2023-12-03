@@ -13,15 +13,15 @@ fn main() {
     let input = client.get_input(year, day).unwrap();
     // get puzzle input
     println!(
-        "getting function for year {} day {} part {}...",
+        "Getting function for year {} day {} part {}...",
         year, day, part
     );
     // run puzzle solution
-    let func = auto_import::select_function(year, day, part);
-    println!("running function...");
+    let func = auto_import::select_function(year, day, part).unwrap();
+    println!("Running function...");
     let now = Instant::now();
     let result = func(input);
-    println!("completed in: {}ms", now.elapsed().as_secs_f64() * 1000.0);
+    println!("Completed in: {}ms", now.elapsed().as_secs_f64() * 1000.0);
     // print result
     println!("Result: {}", result);
     // submit result?
