@@ -6,8 +6,12 @@ authors = ["Alexander Öberg"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rayon = "1.5.1"
+rayon = "1.5.3"
+tui = "0.19.0"
+crossterm = "0.27.0"
+console = "0.15.7"
 
 [build-dependencies]
-quote = "1.0.10"
-syn = { version = "1.0.82", features = ["full"] }
+quote = "1.0.33"
+syn = { version = "2", features = ["full", "parsing"] }
+prettyplease = "0.2.15"

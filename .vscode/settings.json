@@ -1,0 +1,9 @@
+{
+    "rust-analyzer.linkedProjects": [
+        ".\\Cargo.toml"
+    ],
+    "cSpell.words": [
+        "prettyplease",
+        "unparse"
+    ]
+}
