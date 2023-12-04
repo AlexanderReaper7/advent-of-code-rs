@@ -1,5 +1,5 @@
 [workspace]
-members = ["aoc-auto", "aoc-lib"]
+members = ["aoc-lib"]
 [package]
 name = "advent-of-code-rs"
 version = "0.2.0"
@@ -16,4 +16,4 @@ time = "0.3.30"
 aoc-lib = { path = "aoc-lib" }
 
 [build-dependencies]
-aoc-auto = { path = "aoc-auto" }
+aoc-auto = { path = "../aoc-auto" , version = "*"}
