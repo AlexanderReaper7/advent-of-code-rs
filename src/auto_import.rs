@@ -5,6 +5,8 @@ pub mod y2021;
 pub mod y2022;
 #[path = "y2023/mod.rs"]
 pub mod y2023;
+#[path = "y2024/mod.rs"]
+pub mod y2024;
 /// Selects the function for the given year, day, and part
 pub fn select_function(
     year: u32,
@@ -15,6 +17,7 @@ pub fn select_function(
         2021 => Ok(y2021::select_function(day, part)?),
         2022 => Ok(y2022::select_function(day, part)?),
         2023 => Ok(y2023::select_function(day, part)?),
+        2024 => Ok(y2024::select_function(day, part)?),
         _ => Err("Invalid year!".into()),
     }
 }

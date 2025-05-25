@@ -83,4 +83,3 @@ fn prompt_for_input<T: std::str::FromStr>(prompt: &str, default: T) -> T {
     std::io::stdin().read_line(&mut stdin).unwrap();
     stdin.trim().parse::<T>().unwrap_or(default)
 }
-

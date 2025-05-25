@@ -10,9 +10,9 @@ repository = "https://github.com/AlexanderReaper7/advent-of-code-rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rayon = "1.5.3"
-console = "0.15.7"
-time = "0.3.30"
+rayon = "1.10.0"
+console = "0.15.11"
+time = "0.3.41"
 aoc-lib = { path = "aoc-lib" }
 
 [build-dependencies]
