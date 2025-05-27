@@ -19,11 +19,11 @@ pub fn part2(input: String) -> String {
 const DIGITS: [&str; 9] = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 
 fn parse_line_2(s: &str) -> u32 {
-    let mut s = s.to_string();
+    let s = s.to_string();
     let mut first = 0;
     let mut last = 0;
     let mut i = 0;
-    'outer: while i < s.chars().count() {
+    while i < s.chars().count() {
         // if the character is a digit
         if let Some(d) = s.chars().nth(i).unwrap().to_digit(10) {
             if first == 0 {

@@ -1,10 +1,21 @@
 #![feature(iter_array_chunks, iter_next_chunk)]
 //! Advent of code challenge https://adventofcode.com/
-use std::time::Instant;
-use time::Month;
 mod auto_import;
+mod viz_demo;
+
+use std::time::Instant;
+use aoc_lib::*;
+use time::Month;
 
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    
+    // Check if user wants to start visualization server
+    if args.len() > 1 && args[1] == "viz" {
+        start_visualization_server();
+        return;
+    }
+    
     // get input for year day and part
     let (year, day, part) = get_year_day_part();
     println!("Creating client from .session file...");
@@ -82,4 +93,24 @@ fn prompt_for_input<T: std::str::FromStr>(prompt: &str, default: T) -> T {
     println!("{}", prompt);
     std::io::stdin().read_line(&mut stdin).unwrap();
     stdin.trim().parse::<T>().unwrap_or(default)
+}
+
+#[cfg(feature = "server")]
+fn start_visualization_server() {
+    use viz_lib::server::{start_visualization_server, create_web_interface};
+    
+    println!("Setting up visualization server...");
+    create_web_interface();
+    
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    rt.block_on(async {
+        println!("Starting visualization server on http://localhost:3030");
+        println!("Open your browser and navigate to http://localhost:3030");
+        start_visualization_server(3030).await;
+    });
+}
+
+#[cfg(not(feature = "server"))]
+fn start_visualization_server() {
+    println!("Visualization server feature not enabled. Please build with --features server");
 }

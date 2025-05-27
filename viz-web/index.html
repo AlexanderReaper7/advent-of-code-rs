@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Execution Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code Execution Visualizer</h1>
+            <div class="controls">
+                <select id="traceSelect">
+                    <option value="">Select a trace...</option>
+                </select>
+                <button id="loadTrace">Load Trace</button>
+            </div>
+        </header>
+        
+        <main>
+            <div class="visualization-panel">
+                <div class="function-info">
+                    <h2 id="functionName">No trace loaded</h2>
+                    <div class="step-controls">
+                        <button id="prevStep" disabled>Previous</button>
+                        <span id="stepInfo">Step 0 of 0</span>
+                        <button id="nextStep" disabled>Next</button>
+                        <button id="playPause" disabled>Play</button>
+                    </div>
+                </div>
+                
+                <div class="content-panels">
+                    <div class="left-panel">
+                        <div class="section">
+                            <h3>Current Step</h3>
+                            <div id="stepDescription" class="step-description">
+                                No step selected
+                            </div>
+                        </div>
+                          <div class="section">
+                            <h3>Variables</h3>
+                            <div id="variablesView" class="variables-view">
+                                No variables to display
+                            </div>
+                        </div>
+                          <div class="section">
+                            <h3>Arrays</h3>
+                            <div id="arraysView" class="arrays-view">
+                                No arrays to display
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Trees</h3>
+                            <div id="treesView" class="trees-view">
+                                No trees to display
+                            </div>
+                        </div>
+                    </div>
+                      <div class="right-panel">
+                        <div class="section">
+                            <h3>Performance Metrics</h3>
+                            <div id="metricsView" class="metrics-view">
+                                No metrics available
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>Execution Timeline</h3>
+                            <div id="timeline" class="timeline">
+                                No steps to display
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 [workspace]
-members = ["aoc-lib"]
+members = ["aoc-lib", "viz-lib", "viz-proc-macro"]
+
 [package]
 name = "advent-of-code-rs"
 version = "0.2.0"
@@ -9,11 +10,18 @@ description = "Solutions to Advent of Code in Rust"
 repository = "https://github.com/AlexanderReaper7/advent-of-code-rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = []
+server = ["viz-lib/server", "tokio"]
+
 [dependencies]
 rayon = "1.10.0"
 console = "0.15.11"
 time = "0.3.41"
 aoc-lib = { path = "aoc-lib" }
+viz-lib = { path = "viz-lib", features = ["server"] }
+viz-proc-macro = { path = "viz-proc-macro" }
+tokio = { version = "1.0", features = ["full"], optional = true }
 
 [build-dependencies]
 aoc-auto = { path = "../aoc-auto" , version = "*"}

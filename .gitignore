@@ -1,3 +1,7 @@
 /target
 .session
 input
+
+# Visualization trace files
+traces/
+viz-lib/traces/
