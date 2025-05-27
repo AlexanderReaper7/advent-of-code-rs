@@ -21,7 +21,7 @@ time = "0.3.41"
 aoc-lib = { path = "aoc-lib" }
 viz-lib = { path = "viz-lib", features = ["server"] }
 viz-proc-macro = { path = "viz-proc-macro" }
-tokio = { version = "1.0", features = ["full"], optional = true }
+tokio = { version = "1.45", features = ["full"], optional = true }
 
 [build-dependencies]
 aoc-auto = { path = "../aoc-auto" , version = "*"}
