@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 
 use reqwest::header::COOKIE;
 
